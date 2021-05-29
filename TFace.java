@@ -14,13 +14,23 @@ class Location {
         this.walkable = true;
     }
 
+    public boolean isOccupied() { return this.occupied; }
+    public boolean isVisible() { return this.visible; }
+    public boolean isWalkable() { return this.walkable; }
+    public void changeOccupied() { this.occupied = !this.occupied; }
+    public void foundVisible() { this.visible = true; }
     public void addMap(StarMap map) { }
     public void removeMap() { }
+    public String show() { return ' '; }
 }
 
 class emptyLocation extends Location {
     public emptyLocation() {
         super();
+    }
+    @Override
+    public String show() {
+        return '.';
     }
 }
 
@@ -28,6 +38,10 @@ class riverLocation extends Location {
     public riverLocation() {
         super();
         this.walkable = false;
+    }
+    @Override
+    public String show() {
+        return '~';
     }
 }
 
@@ -54,6 +68,9 @@ class THeroBase extends Location {
     public void addMap(StarMap map) {
         hBase.addMap(map);
     }
+    public String show() {
+        return 'b';
+    }
 }
 
 class TVaderBase extends Location {
@@ -70,6 +87,9 @@ class TVaderBase extends Location {
     public void addMap(StarMap map) {
         hBase.addMap(map);
     }
+    public String show() {
+        return 'B';
+    }
 }
 
 class MapBase extends Location {
@@ -85,6 +105,9 @@ class MapBase extends Location {
     @Override
     public void addMap() { this.hasMap = true; }
     public void removeMap() { this.hasMap = false; }
+    public String show() {
+        return 'M';
+    }
 }
 
 class StarMap {
