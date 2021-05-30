@@ -48,7 +48,7 @@ class Location {
     public void changeOccupied() { this.occupied = !this.occupied; }
     public void foundVisible() { this.visible = true; }
     public void addMap(StarMap map) { }
-    public void removeMap() { }
+    public void removeMap(StarMap map) { }
     public StarMap getMap() { return null; }
     public String show() { return " "; }
 }
@@ -84,6 +84,7 @@ class Base {
         this.baseId = id;
     }
     public void addMap(StarMap map) { this.maps.add(map); }
+    public void removeMap(StarMap map) { this.maps.remove(map); }
     //might need to implement hasMap(StarMap map) to look for map
 }
 
@@ -123,6 +124,9 @@ class TVaderBase extends Location {
     public String show() {
         return "B";
     }
+    public void removeMap(StarMap map) {
+        vBase.removeMap(map);
+    }
 }
 
 class MapBase extends Location {
@@ -138,7 +142,7 @@ class MapBase extends Location {
 
     @Override
     public void addMap(StarMap map) { this.hasMap = true; }
-    public void removeMap() { this.hasMap = false; }
+    public void removeMap(StarMap map) { this.hasMap = false; }
     public StarMap getMap() { return this.map; }
     public String show() {
         return "M";
