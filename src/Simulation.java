@@ -158,44 +158,62 @@ public class Simulation{
         int yRandom = (int)Math.floor(Math.random()*(yMax - yMin + 1) + yMin);
 
         //Create VBase at xRandom, yRandom
-        TFace.
+        Location vBase = new TVaderBase(xRandom, yRandom);
+        face.setLocation(vBase);
 
         //Create Rivers around VBase
-
+        Location river1 = new riverLocation(xRandom-1, yRandom);
+        Location river2 = new riverLocation(xRandom, yRandom-1);
+        Location river3 = new riverLocation(xRandom+1, yRandom);
+        Location river4 = new riverLocation(xRandom, yRandom+1);
+        face.setLocation(river1);
+        face.setLocation(river2);
+        face.setLocation(river3);
+        face.setLocation(river4);
 
         //Calc Random Locations for THeroBases
         int options = 4;
-        int xPos;
-        int yPos;
+        int xPos = 0;
+        int yPos = 0;
         for(int i = 0; i < THeroes; i++){
             int int_random = rand.nextInt(options);
             switch(int_random) {
                 case 0:
                     //THeroBase on top row
+                    xPos = rand.nextInt(columns);
                     yPos = 0;
-                    
                     break;
                 case 1:
                     //THeroBase on bottom row
+                    xPos = rand.nextInt(columns);
+                    yPos = rows - 1;
                     break;
                 case 2:
                     //THeroBase on left column
+                    xPos = 0;
+                    yPos = rand.nextInt(rows);
                     break;
                 case 3:
                     //THeroBase on right column
+                    xPos = columns-1;
+                    yPos = rand.nextInt(rows);
                     break;
             }
             //Create THero Bases on edge of map (THero spawns there)
+            String HeroId = "Hero" + (i+1);
+            Location HBase = new THeroBase(xPos, yPos, HeroId);
+            face.setLocation(HBase);
 
-
+            TUnit hero = new THero(face, xPos, yPos, HBase, HeroId);
+            TUnits.add(hero);
         }
+
+        //Randomly Place TRovers and Tvader to empty square
 
 
 
         //Number of StarMaps based on TFace size(MapBases) (can only be in bases)
         //TRovers just span randomly (needs to be in own square)
-        TUnits.add(new THero());
-
     }
 
 
