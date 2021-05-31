@@ -13,8 +13,8 @@ class TFace {
         this.ySize = y;
     }
 
-    public void setLocation(int x, int y, Location location) {
-        this.grid[x][y] = location;
+    public void setLocation(Location location) {
+        this.grid[location.getX()][location.getY()] = location;
     }
     public Location getLocation(int x, int y) {
         return this.grid[x][y];
@@ -34,6 +34,7 @@ class Location {
     protected boolean roverable;
     protected boolean mapBase;
     protected boolean containMap;
+    protected boolean empty;
     protected int xPos;
     protected int yPos; 
 
@@ -44,10 +45,12 @@ class Location {
         this.roverable = false;
         this.mapBase = false;
         this.containMap = false;
+        this.empty = false;
         this.xPos = x;
         this.yPos = y;
     }
 
+    public boolean isEmpty() { return this.empty; }
     public boolean hasMap() { return this.containMap; }
     public boolean isMapBase() { return this.mapBase; }
     public boolean isOccupied() { return this.occupied; }
@@ -68,6 +71,7 @@ class emptyLocation extends Location {
     public emptyLocation(int x, int y) {
         super(x, y);
         this.roverable = true;
+        this.empty = true;
     }
     @Override
     public String show() {
