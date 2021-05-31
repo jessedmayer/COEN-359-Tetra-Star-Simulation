@@ -13,6 +13,9 @@ class TFace {
         this.ySize = y;
     }
 
+    public void setLocation(int x, int y, Location location) {
+        this.grid[x][y] = location;
+    }
     public Location getLocation(int x, int y) {
         return this.grid[x][y];
     }
@@ -31,14 +34,18 @@ class Location {
     protected boolean roverable;
     protected boolean mapBase;
     protected boolean containMap;
+    protected int xPos;
+    protected int yPos; 
 
-    public Location() {
+    public Location(int x, int y) {
         this.occupied = false;
         this.visible = false;
         this.walkable = true;
         this.roverable = false;
         this.mapBase = false;
         this.containMap = false;
+        this.xPos = x;
+        this.yPos = y;
     }
 
     public boolean hasMap() { return this.containMap; }
@@ -53,11 +60,13 @@ class Location {
     public void removeMap(StarMap map) { }
     public StarMap getMap() { return null; }
     public String show() { return " "; }
+    public int getX() { return this.xPos; }
+    public int getY() { return this.yPos; }
 }
 
 class emptyLocation extends Location {
-    public emptyLocation() {
-        super();
+    public emptyLocation(int x, int y) {
+        super(x, y);
         this.roverable = true;
     }
     @Override
@@ -67,8 +76,8 @@ class emptyLocation extends Location {
 }
 
 class riverLocation extends Location {
-    public riverLocation() {
-        super();
+    public riverLocation(int x, int y) {
+        super(x, y);
         this.walkable = false;
         this.visible = true;
     }
@@ -94,8 +103,8 @@ class Base {
 class THeroBase extends Location {
     protected Base hBase;
 
-    public THeroBase(String heroId) {
-        super();
+    public THeroBase(int x, int y, String heroId) {
+        super(x, y);
         this.hBase = new Base(heroId);
         this.visible = true;
     }
@@ -113,8 +122,8 @@ class THeroBase extends Location {
 class TVaderBase extends Location {
     protected Base vBase;
 
-    public TVaderBase() {
-        super();
+    public TVaderBase(int x, int y) {
+        super(x, y);
 
         this.vBase = new Base("TVader");
         this.visible = true;
@@ -136,8 +145,8 @@ class TVaderBase extends Location {
 class MapBase extends Location {
     protected StarMap map;
 
-    public MapBase(StarMap map) {
-        super();
+    public MapBase(int x, int y, StarMap map) {
+        super(x, y);
         this.map = map;
         this.roverable = true;
         this.mapBase = true;
