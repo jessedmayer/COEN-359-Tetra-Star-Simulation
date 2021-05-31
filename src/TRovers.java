@@ -25,36 +25,33 @@ class TRover implements TUnit {
 
     public void move() {
         Location newPos = null;
-        int newX = -1;
-        int newY = -1;
         Random rand = new Random();
         int directions = 4;
         while (newPos == null || !newPos.isRoverable()) {
-            newPos = this.pos;
             int int_random = rand.nextInt(directions);
             switch(int_random) {
                 case 0:
                     if ((xPos + 1) < grid.getXDim()) {
                         newPos = grid.getLocation(xPos+1, yPos);
-                        newX = xPos + 1;
+                        this.xPos = xPos + 1;
                     }
                     break;
                 case 1:
                     if ((xPos - 1) >= 0) {
                         newPos = grid.getLocation(xPos-1, yPos);
-                        newX = xPos - 1;
+                        this.xPos = xPos - 1;
                     }
                     break; 
                 case 2:
                     if ((yPos - 1) >= 0) {
                         newPos = grid.getLocation(xPos, yPos-1);
-                        newY = yPos - 1;
+                        this.yPos = yPos - 1;
                     }
                     break; 
                 case 3:
                     if ((yPos + 1) < grid.getYDim()) {
                         newPos = grid.getLocation(xPos, yPos+1);
-                        newY = yPos + 1;
+                        this.yPos = yPos + 1;
                     }
                     break;
                 default:
@@ -62,8 +59,6 @@ class TRover implements TUnit {
             }
         }
         this.pos = newPos;
-        this.xPos = newX;
-        this.yPos = newY;
     }
     public void fly(int x, int y) { }
     public void getFlyer() { }
@@ -96,34 +91,31 @@ class THero implements TUnit {
         Location newPos = null;
         Random rand = new Random();
         int directions = 4;
-        int newX = -1;
-        int newY = -1;
         while (newPos == null || !newPos.isWalkable()) {
-            newPos = this.pos;
             int int_random = rand.nextInt(directions);
             switch(int_random) {
                 case 0:
                     if ((xPos + 1) < grid.getXDim()) {
                         newPos = grid.getLocation(xPos+1, yPos);
-                        newX = xPos + 1;
+                        this.xPos = xPos + 1;
                     }
                     break;
                 case 1:
                     if ((xPos - 1) >= 0) {
                         newPos = grid.getLocation(xPos-1, yPos);
-                        newX = xPos - 1;
+                        this.xPos = xPos - 1;
                     }
                     break; 
                 case 2:
                     if ((yPos - 1) >= 0) {
                         newPos = grid.getLocation(xPos, yPos-1);
-                        newY = yPos - 1;
+                        this.yPos = yPos - 1;
                     }
                     break; 
                 case 3:
                     if ((yPos + 1) < grid.getYDim()) {
                         newPos = grid.getLocation(xPos, yPos+1);
-                        newY = yPos + 1;
+                        this.yPos = yPos + 1;
                     }
                     break;
                 default:
@@ -131,8 +123,6 @@ class THero implements TUnit {
             }
         }
         this.pos = newPos;
-        this.xPos = newX;
-        this.yPos = newY;
         //might need to move to separate method to split to different time steps
         if (this.pos.isMapBase()) {
             if (this.pos.hasMap()){
@@ -187,34 +177,31 @@ class TVader implements TUnit {
         Location newPos = null;
         Random rand = new Random();
         int directions = 4;
-        int newX = -1;
-        int newY = -1;
         while (newPos == null || !newPos.isWalkable()) {
-            newPos = this.pos;
             int int_random = rand.nextInt(directions);
             switch(int_random) {
                 case 0:
                     if ((xPos + 1) < grid.getXDim()) {
                         newPos = grid.getLocation(xPos+1, yPos);
-                        newX = xPos + 1;
+                        this.xPos = xPos + 1;
                     }
                     break;
                 case 1:
                     if ((xPos - 1) >= 0) {
                         newPos = grid.getLocation(xPos-1, yPos);
-                        newX = xPos - 1;
+                        this.xPos = xPos - 1;
                     }
                     break; 
                 case 2:
                     if ((yPos - 1) >= 0) {
                         newPos = grid.getLocation(xPos, yPos-1);
-                        newY = yPos - 1;
+                        this.yPos = yPos - 1;
                     }
                     break; 
                 case 3:
                     if ((yPos + 1) < grid.getYDim()) {
                         newPos = grid.getLocation(xPos, yPos+1);
-                        newY = yPos + 1;
+                        this.yPos = yPos + 1;
                     }
                     break;
                 default:
@@ -222,11 +209,9 @@ class TVader implements TUnit {
             }
         }
         this.pos = newPos;
-        this.xPos = newX;
-        this.yPos = newY;
         if (this.pos.isMapBase()){
             StarMap map = this.pos.getMap();
-            this.pos.removeMap(map);
+            this.pos.removeMap();
             fly(bx, by);
             this.basePos.addMap(map);
             //implement memento pattern to retrace steps
