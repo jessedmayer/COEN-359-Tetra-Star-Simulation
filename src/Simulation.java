@@ -11,7 +11,7 @@ import java.util.List;
 public class Simulation{
     private JFrame window;
     private JPanel topPanel, groupPanel, headerPanel;
-    private JPanel[][] TFace;
+    private JPanel[][] TFacePanels;
     private JLabel currentTimeStep;
     private int timeStep = 0;
     private int rows;
@@ -51,7 +51,7 @@ public class Simulation{
         topPanel = new JPanel(new BorderLayout());
         setHeaderPanel();
         groupPanel = new JPanel();
-        TFace = new JPanel[rows][columns];
+        TFacePanels = new JPanel[rows][columns];
 
         topPanel.add(headerPanel, BorderLayout.NORTH);
         topPanel.add(groupPanel, BorderLayout.CENTER);
@@ -61,9 +61,9 @@ public class Simulation{
         //Create Tetra Grid
         for(int m = 0; m < rows; m++) {
             for(int n = 0; n < columns; n++) {
-                TFace[m][n] = new JPanel();
-                TFace[m][n].setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-                groupPanel.add(TFace[m][n]);
+                TFacePanels[m][n] = new JPanel();
+                TFacePanels[m][n].setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+                groupPanel.add(TFacePanels[m][n]);
             }
         }
 
@@ -80,23 +80,23 @@ public class Simulation{
         //Remove prior simulation's TFace
         for(int m = 0; m < rows; m++) {
             for(int n = 0; n < columns; n++) {
-                groupPanel.remove(TFace[m][n]);
+                groupPanel.remove(TFacePanels[m][n]);
             }
         }
 
         getUserInput();
 
         //groupPanel = new JPanel();
-        TFace = new JPanel[rows][columns];
+        TFacePanels = new JPanel[rows][columns];
 
         groupPanel.setLayout(new GridLayout(rows,columns));
 
         //Create Tetra Grid
         for(int m = 0; m < rows; m++) {
             for(int n = 0; n < columns; n++) {
-                TFace[m][n] = new JPanel();
-                TFace[m][n].setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-                groupPanel.add(TFace[m][n]);
+                TFacePanels[m][n] = new JPanel();
+                TFacePanels[m][n].setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+                groupPanel.add(TFacePanels[m][n]);
             }
         }
 
@@ -136,6 +136,66 @@ public class Simulation{
         timeStep++;
         currentTimeStep.setText("Current Time Step: " + timeStep);
         //Scan TFace for TRovers, THeroes, and TVaders and have them move
+        //look through TUnit list and move them
+        //Unit element.move()
+        //Revalidate (update) TFace for new positions
+        //.show()
+    }
+
+    public void initializeTFace(){
+        List<TUnit> TUnits = new ArrayList<>();
+        Random rand = new Random();
+
+        //Create TFace;
+        TFace face = new TFace(columns, rows);
+
+        //Calc Random Location for VBase
+        int xMax = columns - 2;
+        int xMin = 1;
+        int xRandom = (int)Math.floor(Math.random()*(xMax - xMin + 1) + xMin);
+        int yMax = rows - 2;
+        int yMin = 1;
+        int yRandom = (int)Math.floor(Math.random()*(yMax - yMin + 1) + yMin);
+
+        //Create VBase at xRandom, yRandom
+        TFace.
+
+        //Create Rivers around VBase
+
+
+        //Calc Random Locations for THeroBases
+        int options = 4;
+        int xPos;
+        int yPos;
+        for(int i = 0; i < THeroes; i++){
+            int int_random = rand.nextInt(options);
+            switch(int_random) {
+                case 0:
+                    //THeroBase on top row
+                    yPos = 0;
+                    
+                    break;
+                case 1:
+                    //THeroBase on bottom row
+                    break;
+                case 2:
+                    //THeroBase on left column
+                    break;
+                case 3:
+                    //THeroBase on right column
+                    break;
+            }
+            //Create THero Bases on edge of map (THero spawns there)
+
+
+        }
+
+
+
+        //Number of StarMaps based on TFace size(MapBases) (can only be in bases)
+        //TRovers just span randomly (needs to be in own square)
+        TUnits.add(new THero());
+
     }
 
 
