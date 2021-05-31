@@ -13,9 +13,8 @@ class TFace {
         this.ySize = y;
     }
 
-    public void setLocation(Location location) {
-        this.grid[location.getX()][location.getY()] = location;
-
+    public void setLocation(int x, int y, Location location) {
+        this.grid[x][y] = location;
     }
     public Location getLocation(int x, int y) {
         return this.grid[x][y];
