@@ -1,5 +1,7 @@
+import java.util.*;
+
 class TFace {
-    private List<String> heroIds;
+    private List<String> heroIds = new ArrayList<>();
     private boolean vBaseExist;
     private Location[][] grid;
     private int xSize;
@@ -68,6 +70,7 @@ class riverLocation extends Location {
     public riverLocation() {
         super();
         this.walkable = false;
+        this.visible = true;
     }
     @Override
     public String show() {
@@ -94,6 +97,7 @@ class THeroBase extends Location {
     public THeroBase(String heroId) {
         super();
         this.hBase = new Base(heroId);
+        this.visible = true;
     }
 
     @Override
@@ -112,7 +116,7 @@ class TVaderBase extends Location {
     public TVaderBase() {
         super();
 
-        this.hBase = new Base("TVader");
+        this.vBase = new Base("TVader");
         this.visible = true;
     }
 
@@ -141,15 +145,10 @@ class MapBase extends Location {
     }
 
     @Override
-    public void addMap(StarMap map) { this.hasMap = true; }
-    public void removeMap(StarMap map) { this.hasMap = false; }
+    public void addMap(StarMap map) { this.containMap = true; }
+    public void removeMap(StarMap map) { this.containMap = false; }
     public StarMap getMap() { return this.map; }
     public String show() {
         return "M";
     }
-}
-
-class StarMap {
-    public void view() { }
-    public void encrypt(int heroId) { }
 }
