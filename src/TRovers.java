@@ -82,18 +82,18 @@ class THero implements TUnit {
     private Location pos;
     private int bxPos;
     private int byPos;
-    private Location basePos;
+    private Location base;
     private String id;
 
-    public THero(TFace grid, int x, int y, int bx, int by, String id) {
+    public THero(TFace grid, int x, int y, Location hBase, String id) {
         this.grid = grid;
         this.xPos = x;
         this.yPos = y;
         this.pos = grid.getLocation(x, y);
         this.flyer = false;
-        this.bxPos = bx;
-        this.byPos = by;
-        this.basePos = grid.getLocation(bx, by);
+        this.bxPos = hBase.getX();
+        this.byPos = hBase.getY();
+        this.base = hBase;
         this.id = id;
     }
     public void move() {
@@ -174,18 +174,18 @@ class TVader implements TUnit {
     private int xPos;
     private int yPos;
     private Location pos;
-    private Location basePos;
+    private Location base;
     private int bxPos;
     private int byPos;
 
-    public TVader(TFace grid, int x, int y, int bx, int by) {
+    public TVader(TFace grid, int x, int y, Location vBase) {
         this.grid = grid;
         this.xPos = x;
         this.yPos = y;
         this.pos = grid.getLocation(x, y);
-        this.bxPos = bx;
-        this.byPos = by;
-        this.basePos = grid.getLocation(bx, by);
+        this.bxPos = vBase.getX();
+        this.byPos = vBase.getY();
+        this.base = vBase;
         this.flyer = true;
         //implement builder pattern for constructor
     }
@@ -234,7 +234,7 @@ class TVader implements TUnit {
             StarMap map = this.pos.getMap();
             this.pos.removeMap(map);
             fly(bx, by);
-            this.basePos.addMap(map);
+            this.base.addMap(map);
             //implement memento pattern to retrace steps
         }
 
@@ -249,6 +249,7 @@ class TVader implements TUnit {
     public void getFlyer() {
         this.flyer = true;
     }
+    public String getId() { return null; }
     public String show() {
         if (flyer) {
             return "VF";
