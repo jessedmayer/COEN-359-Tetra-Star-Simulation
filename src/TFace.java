@@ -36,7 +36,7 @@ class Location {
     protected boolean containMap;
     protected boolean empty;
     protected int xPos;
-    protected int yPos;
+    protected int yPos; 
 
     public Location(int x, int y) {
         this.occupied = false;
@@ -59,9 +59,9 @@ class Location {
     public boolean isRoverable() { return this.roverable; }
     public void changeOccupied() { this.occupied = !this.occupied; }
     public void foundVisible() { this.visible = true; }
-    public void addMap(StarMap map) { }
-    public void removeMap(StarMap map) { }
-    public StarMap getMap() { return null; }
+    public void addMap(StarMaps map) { }
+    public void removeMap(StarMaps map) { }
+    public StarMaps getMap() { return null; }
     public String show() { return " "; }
     public int getX() { return this.xPos; }
     public int getY() { return this.yPos; }
@@ -93,15 +93,15 @@ class riverLocation extends Location {
 
 //adaptee for bases
 class Base {
-    protected List<StarMap> maps;
+    protected List<StarMaps> maps;
     protected String baseId;
 
     public Base(String id) {
         this.baseId = id;
     }
-    public void addMap(StarMap map) { this.maps.add(map); }
-    public void removeMap(StarMap map) { this.maps.remove(map); }
-    //might need to implement hasMap(StarMap map) to look for map
+    public void addMap(StarMaps map) { this.maps.add(map); }
+    public void removeMap(StarMaps map) { this.maps.remove(map); }
+    public List<StarMaps> getMaps() { return this.maps; }
 }
 
 class THeroBase extends Location {
@@ -114,7 +114,7 @@ class THeroBase extends Location {
     }
 
     @Override
-    public void addMap(StarMap map) {
+    public void addMap(StarMaps map) {
         hBase.addMap(map);
         this.containMap = true;
     }
@@ -134,22 +134,22 @@ class TVaderBase extends Location {
     }
 
     @Override
-    public void addMap(StarMap map) {
+    public void addMap(StarMaps map) {
         vBase.addMap(map);
         this.containMap = true;
     }
     public String show() {
         return "B";
     }
-    public void removeMap(StarMap map) {
+    public void removeMap(StarMaps map) {
         vBase.removeMap(map);
     }
 }
 
 class MapBase extends Location {
-    protected StarMap map;
+    protected StarMaps map;
 
-    public MapBase(int x, int y, StarMap map) {
+    public MapBase(int x, int y, StarMaps map) {
         super(x, y);
         this.map = map;
         this.roverable = true;
@@ -158,9 +158,9 @@ class MapBase extends Location {
     }
 
     @Override
-    public void addMap(StarMap map) { this.containMap = true; }
-    public void removeMap(StarMap map) { this.containMap = false; }
-    public StarMap getMap() { return this.map; }
+    public void addMap(StarMaps map) { this.containMap = true; }
+    public void removeMap(StarMaps map) { this.containMap = false; }
+    public StarMaps getMap() { return this.map; }
     public String show() {
         return "M";
     }
