@@ -6,6 +6,7 @@ interface TUnit {
     public void getFlyer();
     public String show(); 
     public String getId();
+    public void changeEncryption(char c); 
 }
 
 class TRover implements TUnit {
@@ -69,6 +70,7 @@ class TRover implements TUnit {
     public void fly(int x, int y) { }
     public void getFlyer() { }
     public String getId() { return null; }
+    public void changeEncryption(char c) { }
     public String show() { 
         return "R";
     }
@@ -84,8 +86,9 @@ class THero implements TUnit {
     private int byPos;
     private Location base;
     private String id;
+    private char encryptMethod;
 
-    public THero(TFace grid, int x, int y, Location hBase, String id) {
+    public THero(TFace grid, int x, int y, Location hBase, String id, char method) {
         this.grid = grid;
         this.xPos = x;
         this.yPos = y;
@@ -95,6 +98,7 @@ class THero implements TUnit {
         this.byPos = hBase.getY();
         this.base = hBase;
         this.id = id;
+        this.encryptMethod = method;
     }
     public void move() {
         Location newPos = null;
@@ -142,8 +146,7 @@ class THero implements TUnit {
         if (this.pos.isMapBase()) {
             if (this.pos.hasMap()){
                 StarMap map = this.pos.getMap();
-                map.view();
-                map.encrypt(heroId);
+                map.view(this);
             }
         }
     }
@@ -156,6 +159,9 @@ class THero implements TUnit {
     }
     public void getFlyer() {
         this.flyer = true;
+    }
+    public void changeEncryption(char c) {
+        this.encryptMethod = c;
     }
     public String getId() { return this.id; }
     public String show() {
@@ -249,6 +255,7 @@ class TVader implements TUnit {
     public void getFlyer() {
         this.flyer = true;
     }
+    public void changeEncryption(char c) { }
     public String getId() { return null; }
     public String show() {
         if (flyer) {
