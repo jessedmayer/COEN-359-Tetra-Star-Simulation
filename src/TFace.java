@@ -2,10 +2,11 @@ import java.util.*;
 
 class TFace {
     private List<String> heroIds = new ArrayList<>();
-    private boolean vBaseExist;
     private Location[][] grid;
     private int xSize;
     private int ySize;
+    private int vBaseX;
+    private int vBaseY;
 
     public TFace(int x, int y){
         grid = new Location[x][y];
@@ -25,6 +26,18 @@ class TFace {
     public int getYDim() {
         return this.ySize;
     }
+    public void setVX(int x) {
+        this.vBaseX = x;
+    }
+    public void setVY(int y) {
+        this.vBaseY = y;
+    }
+    public int getVX() { 
+        return this.vBaseX;
+    }
+    public int getVY() {
+        return this.vBaseY;
+    }
 }
 
 class Location {
@@ -32,6 +45,7 @@ class Location {
     protected boolean visible;
     protected boolean walkable;
     protected boolean roverable;
+    protected boolean vaderable;
     protected boolean mapBase;
     protected boolean containMap;
     protected boolean empty;
@@ -43,6 +57,7 @@ class Location {
         this.visible = false;
         this.walkable = true;
         this.roverable = false;
+        this.vaderable = true;
         this.mapBase = false;
         this.containMap = false;
         this.empty = false;
@@ -57,6 +72,7 @@ class Location {
     public boolean isVisible() { return this.visible; }
     public boolean isWalkable() { return this.walkable; }
     public boolean isRoverable() { return this.roverable; }
+    public boolean isVaderable() { return this.vaderable; }
     public void changeOccupied() { this.occupied = !this.occupied; }
     public void foundVisible() { this.visible = true; }
     public void addMap(StarMaps map) { }
@@ -84,6 +100,7 @@ class riverLocation extends Location {
         super(x, y);
         this.walkable = false;
         this.visible = true;
+        this.vaderable = false;
     }
     @Override
     public String show() {
@@ -111,6 +128,7 @@ class THeroBase extends Location {
         super(x, y);
         this.hBase = new Base(heroId);
         this.visible = true;
+        this.vaderable = false;
     }
 
     @Override
@@ -143,6 +161,9 @@ class TVaderBase extends Location {
     }
     public void removeMap(StarMaps map) {
         vBase.removeMap(map);
+        if (vBase.getMaps().isEmpty()) {
+            this.containMap = false;
+        }
     }
 }
 
