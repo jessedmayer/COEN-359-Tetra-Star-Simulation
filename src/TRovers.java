@@ -10,6 +10,12 @@ interface TUnit {
     public void nextTimeStep();
     public int getX();
     public int getY();
+    public void setCurrentState (TUnitState s);
+    public boolean hasFlyer();
+    public int getBaseX();
+    public int getBaseY();
+    public char getSymbol();
+    public void loseFlyer();
 }
 
 class TRover implements TUnit {
@@ -72,14 +78,20 @@ class TRover implements TUnit {
     }
     public void fly(int x, int y) { }
     public void getFlyer() { }
+    public boolean hasFlyer() { return this.flyer; }
     public String getId() { return null; }
     public void changeEncryption(char c) { }
+    public void setCurrentState (TUnitState s) { }
     public String show() { 
         return "R";
     }
     public void nextTimeStep() { move(); }
     public int getX() { return this.xPos; }
     public int getY() { return this.yPos; }
+    public int getBaseX() { return null; }
+    public int getBaseY() { return null; }
+    public char getSymbol() { return null; }
+    public void loseFlyer() { this.flyer = false; }
 }
 
 class THero implements TUnit {
@@ -93,6 +105,7 @@ class THero implements TUnit {
     private Location base;
     private String id;
     private char encryptMethod;
+    private TUnitState currentState;
 
     public THero(TFace grid, int x, int y, Location hBase, String id, char method) {
         this.grid = grid;
@@ -105,6 +118,7 @@ class THero implements TUnit {
         this.base = hBase;
         this.id = id;
         this.encryptMethod = method;
+        this.currentState = new HeroMovingState(grid, this);
     }
     public void move() {
         Location newPos = null;
@@ -148,7 +162,7 @@ class THero implements TUnit {
         this.pos.foundVisible();
         this.xPos = newX;
         this.yPos = newY;
-        //might need to move to separate method to split to different time steps
+        //if mapBase has a map, THero will view map in the same time step
         if (this.pos.isMapBase()) {
             if (this.pos.hasMap()){
                 StarMap map = this.pos.getMap();
@@ -163,9 +177,9 @@ class THero implements TUnit {
             this.pos = grid.getLocation(x, y);
         }
     }
-    public void getFlyer() {
-        this.flyer = true;
-    }
+    public void getFlyer() { this.flyer = true; }
+    public void loseFlyer() { this.flyer = false; }
+    public boolean hasFlyer() { return this.flyer; }
     public void changeEncryption(char c) {
         this.encryptMethod = c;
     }
@@ -178,11 +192,15 @@ class THero implements TUnit {
             return "H";
         }
     }
+    public void setCurrentState (TUnitState s) { this.currentState = s; }
     public void nextTimeStep() {
-
+        this.currentState.nextTimeStep();
     }
     public int getX() { return this.xPos; }
     public int getY() { return this.yPos; }
+    public int getBaseX() { return this.bxPos; }
+    public int getBaseY() { return this.byPos; }
+    public char getSymbol() { return this.encryptMethod; }
 }
 
 class TVader implements TUnit {
@@ -194,6 +212,7 @@ class TVader implements TUnit {
     private Location base;
     private int bxPos;
     private int byPos;
+    private TUnitState currentState;
 
     public TVader(TFace grid, int x, int y, Location vBase) {
         this.grid = grid;
@@ -204,6 +223,7 @@ class TVader implements TUnit {
         this.byPos = vBase.getY();
         this.base = vBase;
         this.flyer = true;
+        this.currentState = new VaderMovingState(grid, this);
         //implement builder pattern for constructor
     }
     public void move() {
@@ -212,7 +232,7 @@ class TVader implements TUnit {
         int directions = 4;
         int newX = -1;
         int newY = -1;
-        while (newPos == null || !newPos.isWalkable()) {
+        while (newPos == null || !newPos.isVaderable()) {
             newPos = this.pos;
             int int_random = rand.nextInt(directions);
             switch(int_random) {
@@ -263,10 +283,11 @@ class TVader implements TUnit {
             this.pos = grid.getLocation(x, y);
         }
     }
-    public void getFlyer() {
-        this.flyer = true;
-    }
+    public void getFlyer() { this.flyer = true; }
+    public void loseFlyer() { this.flyer = false; }
+    public boolean hasFlyer() { return this.flyer; }
     public void changeEncryption(char c) { }
+    public void setCurrentState (TUnitState s) { this.currentState = s; }
     public String getId() { return null; }
     public String show() {
         if (flyer) {
@@ -278,4 +299,10 @@ class TVader implements TUnit {
     }
     public int getX() { return this.xPos; }
     public int getY() { return this.yPos; }
+    public void nextTimeStep() {
+        this.currentState.nextTimeStep();
+    }
+    public int getBaseX() { return this.bxPos; }
+    public int getBaseY() { return this.byPos; }
+    public char getSymbol() { return null; }
 }
