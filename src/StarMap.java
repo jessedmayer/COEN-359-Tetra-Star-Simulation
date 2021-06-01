@@ -104,6 +104,9 @@ class StarMaps {
         }
         return false;
     }
+    public Location getBase() {
+        return this.mapBase;
+    }
 }
 
 class StarMap extends StarMaps {
