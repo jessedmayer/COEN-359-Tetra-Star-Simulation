@@ -7,6 +7,9 @@ interface TUnit {
     public String show(); 
     public String getId();
     public void changeEncryption(char c); 
+    public void nextTimeStep();
+    public int getX();
+    public int getY();
 }
 
 class TRover implements TUnit {
@@ -74,6 +77,9 @@ class TRover implements TUnit {
     public String show() { 
         return "R";
     }
+    public void nextTimeStep() { move(); }
+    public int getX() { return this.xPos; }
+    public int getY() { return this.yPos; }
 }
 
 class THero implements TUnit {
@@ -172,6 +178,11 @@ class THero implements TUnit {
             return "H";
         }
     }
+    public void nextTimeStep() {
+
+    }
+    public int getX() { return this.xPos; }
+    public int getY() { return this.yPos; }
 }
 
 class TVader implements TUnit {
@@ -265,4 +276,6 @@ class TVader implements TUnit {
             return "V";
         }
     }
+    public int getX() { return this.xPos; }
+    public int getY() { return this.yPos; }
 }
