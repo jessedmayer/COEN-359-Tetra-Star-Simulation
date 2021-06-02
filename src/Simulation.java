@@ -54,6 +54,13 @@ public class Simulation{
         TRovers = Integer.parseInt(input);
     }
 
+    public void decryptingStarMapMessage(String heroId, String mapId, int date, String mapText){
+        JFrame f = new JFrame();
+        JOptionPane.showMessageDialog(f, heroId + " has decrypted " + mapId +
+                ", which was previously encrypted at time step " +
+                " the contents of the Star Map are: " + mapText);
+    }
+
     public void createPanels(){
         topPanel = new JPanel(new BorderLayout());
         setHeaderPanel();
@@ -284,6 +291,8 @@ public class Simulation{
 
         //Create TRovers and place randomly in empty squares
         for(int i = 0; i < TRovers; i++){
+            xPos = rand.nextInt(columns);
+            yPos = rand.nextInt(rows);
             while(!face.getLocation(xPos,yPos).isEmpty()){
                 xPos = rand.nextInt(columns);
                 yPos = rand.nextInt(rows);
@@ -299,13 +308,13 @@ public class Simulation{
         //Update Positions to UI
         for(int m = 0; m < rows; m++) {
             for(int n = 0; n < columns; n++) {
-                if(face.getLocation(n, m) == null){
-                    TFaceLabels[m][n].setText("X");
+                if(!face.getLocation(n, m).isVisible()){
+                    TFaceLabels[m][n].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/NotVisible.jpg"));
                 }
                 else{
-                    //TFaceLabels[m][n].setText(face.getLocation(n, m).show());
                     TFaceLabels[m][n].setIcon(new ImageIcon(face.getLocation(n, m).show()));
-
+                    //TFaceLabels[m][n].setAlignmentX(JLabel.CENTER);
+                    //TFaceLabels[m][n].setAlignmentY(JLabel.CENTER);
                     //ImageIcon tempIcon = new ImageIcon(face.getLocation(n, m).show());
                     //Image tempImage = getScaledImage(tempIcon);
                     //TFaceLabels[m][n].setIcon(getScaledImage(new ImageIcon()));
@@ -319,8 +328,6 @@ public class Simulation{
             System.out.println(temp);
             xPos = temp.getX();
             yPos = temp.getY();
-
-            //Add check to find if emptyLocation is visible or not
 
             if(face.getLocation(xPos,yPos).isEmpty()){
                 //TUnit is by itself in square
@@ -353,6 +360,10 @@ public class Simulation{
             }
 
         }
+
+
+
+
         //checkIndexing();
         groupPanel.revalidate();
     }

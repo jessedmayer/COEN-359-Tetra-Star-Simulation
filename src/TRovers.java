@@ -286,7 +286,7 @@ class TVader implements TUnit {
     public String getId() { return null; }
     public String show() {
         if (flyer) {
-            return "VF";
+            return "COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg";
         }
         else {
             //return "V";
