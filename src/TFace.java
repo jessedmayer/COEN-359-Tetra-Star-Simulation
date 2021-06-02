@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.*;
 
 class TFace {
@@ -7,12 +8,17 @@ class TFace {
     private int ySize;
     private int vBaseX;
     private int vBaseY;
+    private int currentTimeStep = 0;
 
     public TFace(int x, int y){
         grid = new Location[x][y];
         this.xSize = x;
         this.ySize = y;
     }
+
+    public void incrementTimeStep(){ this.currentTimeStep++; }
+
+    public int getCurrentTimeStep(){ return this.currentTimeStep;}
 
     public void setLocation(Location location) {
         this.grid[location.getX()][location.getY()] = location;
@@ -111,7 +117,7 @@ class riverLocation extends Location {
 
 //adaptee for bases
 class Base {
-    protected List<StarMaps> maps;
+    protected List<StarMaps> maps = new ArrayList<>();
     protected String baseId;
 
     public Base(String id) {
@@ -183,7 +189,13 @@ class MapBase extends Location {
 
     @Override
     public void addMap(StarMaps map) { this.containMap = true; }
-    public void removeMap(StarMaps map) { this.containMap = false; }
+    public void removeMap(StarMaps map) {
+        this.containMap = false;
+
+        JFrame f = new JFrame();
+        JOptionPane.showMessageDialog(f, "TVader has stolen a StarMap!");
+
+    }
     public StarMaps getMap() { return this.map; }
     public String show() {
         //return "M";
