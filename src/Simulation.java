@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.awt.image.*;
+
 
 
 public class Simulation{
@@ -32,7 +34,8 @@ public class Simulation{
         createPanels();
         initializeTFace();
 
-        window.setSize(100*columns,100*rows);
+        window.setSize(110*columns,120*rows);
+        //window.pack();
         window.setContentPane(topPanel);
         window.setVisible(true);
     }
@@ -110,7 +113,7 @@ public class Simulation{
             }
         }
 
-        window.setSize(100*columns,100*rows);
+        window.setSize(110*columns,120*rows);
 
         //Refreshes the TFace with its new rows and columns
         groupPanel.revalidate();
@@ -161,8 +164,7 @@ public class Simulation{
         Random rand = new Random();
         int xPos = 0;
         int yPos = 0;
-
-
+        int int_random;
 
         //Calc Random Location for VBase
         int xMax = columns - 2;
@@ -186,50 +188,52 @@ public class Simulation{
         face.setLocation(river3);
         face.setLocation(river4);
 
-        //Calc Random Locations for THeroBases
-        //Check to make HeroBase not on river
+        //Calc Random Locations for THeroBases, not on river or VaderBase
+        //Select initial position that isn't empty
+        xPos = xRandom;
+        yPos = yRandom;
         int options = 4;
         for(int i = 0; i < THeroes; i++){
-            int int_random = rand.nextInt(options);
-            switch(int_random) {
-                case 0:
-                    //THeroBase on top row
-                    xPos = rand.nextInt(columns);
-                    yPos = 0;
-                    break;
-                case 1:
-                    //THeroBase on bottom row
-                    xPos = rand.nextInt(columns);
-                    yPos = rows - 1;
-                    break;
-                case 2:
-                    //THeroBase on left column
-                    xPos = 0;
-                    yPos = rand.nextInt(rows);
-                    break;
-                case 3:
-                    //THeroBase on right column
-                    xPos = columns-1;
-                    yPos = rand.nextInt(rows);
-                    break;
+            while(face.getLocation(xPos,yPos) != null){
+                int_random = rand.nextInt(options);
+                switch(int_random) {
+                    case 0:
+                        //THeroBase on top row
+                        xPos = rand.nextInt(columns);
+                        yPos = 0;
+                        break;
+                    case 1:
+                        //THeroBase on bottom row
+                        xPos = rand.nextInt(columns);
+                        yPos = rows - 1;
+                        break;
+                    case 2:
+                        //THeroBase on left column
+                        xPos = 0;
+                        yPos = rand.nextInt(rows);
+                        break;
+                    case 3:
+                        //THeroBase on right column
+                        xPos = columns-1;
+                        yPos = rand.nextInt(rows);
+                        break;
+                }
             }
+
             //Create THero Bases on edge of map (THero spawns there)
             String HeroId = "Hero" + (i+1);
             Location HBase = new THeroBase(xPos, yPos, HeroId);
             face.setLocation(HBase);
 
-            //^* randomly select
+            //Randomly select encryption method for hero
+            char method;
             int_random = rand.nextInt(2);
             switch(int_random) {
                 case 0:
-                    //THeroBase on top row
-                    xPos = rand.nextInt(columns);
-                    yPos = 0;
+                    method = '^';
                     break;
                 case 1:
-                    //THeroBase on bottom row
-                    xPos = rand.nextInt(columns);
-                    yPos = rows - 1;
+                    method = '*';
                     break;
             }
             TUnit hero = new THero(face, xPos, yPos, HBase, HeroId, '*');
@@ -270,6 +274,8 @@ public class Simulation{
 
         //Create TVader and place randomly in empty square
         //while(face.getLocation(xPos,yPos) != null){
+        xPos = rand.nextInt(columns);
+        yPos = rand.nextInt(rows);
         while(!face.getLocation(xPos,yPos).isEmpty()){
             xPos = rand.nextInt(columns);
             yPos = rand.nextInt(rows);
@@ -297,7 +303,13 @@ public class Simulation{
                     TFaceLabels[m][n].setText("X");
                 }
                 else{
-                    TFaceLabels[m][n].setText(face.getLocation(n, m).show());
+                    //TFaceLabels[m][n].setText(face.getLocation(n, m).show());
+                    TFaceLabels[m][n].setIcon(new ImageIcon(face.getLocation(n, m).show()));
+
+                    //ImageIcon tempIcon = new ImageIcon(face.getLocation(n, m).show());
+                    //Image tempImage = getScaledImage(tempIcon);
+                    //TFaceLabels[m][n].setIcon(getScaledImage(new ImageIcon()));
+
                 }
             }
         }
@@ -307,7 +319,39 @@ public class Simulation{
             System.out.println(temp);
             xPos = temp.getX();
             yPos = temp.getY();
-            TFaceLabels[yPos][xPos].setText(temp.show());
+
+            //Add check to find if emptyLocation is visible or not
+
+            if(face.getLocation(xPos,yPos).isEmpty()){
+                //TUnit is by itself in square
+                TFaceLabels[yPos][xPos].setIcon(new ImageIcon(temp.show()));
+            }
+            String locationIcon = String.valueOf(TFaceLabels[yPos][xPos].getIcon());
+            if(locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/THeroBase.jpg")){
+                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")){
+                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+THeroBase.jpg"));
+                }
+            }
+            if(locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/TVaderBase.jpg")){
+                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")){
+                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+TVaderBase.jpg"));
+                }
+                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader.jpg")){
+                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+TVaderBase.jpg"));
+                }
+            }
+            if(locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg")){
+                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")){
+                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+MapBase.jpg"));
+                }
+                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader.jpg")){
+                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+MapBase.jpg"));
+                }
+                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")){
+                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TRover+MapBase.jpg"));
+                }
+            }
+
         }
         //checkIndexing();
         groupPanel.revalidate();
@@ -321,7 +365,16 @@ public class Simulation{
             }
         }
     }
+    private Image getScaledImage(Image srcImg){
+        BufferedImage resizedImg = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
 
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, 100, 100, null);
+        g2.dispose();
+
+        return resizedImg;
+    }
 
 
     public static void main(String[] args){

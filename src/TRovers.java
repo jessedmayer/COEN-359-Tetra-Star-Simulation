@@ -83,7 +83,8 @@ class TRover implements TUnit {
     public void changeEncryption(char c) { }
     public void setCurrentState (TUnitState s) { }
     public String show() {
-        return "R";
+        //return "R";
+        return "COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg";
     }
     public void nextTimeStep() { move(); }
     public int getX() { return this.xPos; }
@@ -186,10 +187,12 @@ class THero implements TUnit {
     public String getId() { return this.id; }
     public String show() {
         if (flyer) {
-            return "HF";
+            //return "HF";
+            return "COEN-359-Tetra-Star-Simulation/Logos/THero+Flyer.jpg";
         }
         else {
-            return "H";
+            //return "H";
+            return "COEN-359-Tetra-Star-Simulation/Logos/THero.jpg";
         }
     }
     public void setCurrentState (TUnitState s) { this.currentState = s; }
@@ -286,7 +289,8 @@ class TVader implements TUnit {
             return "VF";
         }
         else {
-            return "V";
+            //return "V";
+            return "COEN-359-Tetra-Star-Simulation/Logos/TVader.jpg";
         }
     }
     public int getX() { return this.xPos; }
