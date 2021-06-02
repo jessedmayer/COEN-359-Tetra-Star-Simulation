@@ -170,9 +170,9 @@ class TVaderBase extends Location {
 class MapBase extends Location {
     protected StarMaps map;
 
-    public MapBase(int x, int y, StarMaps map) {
+    public MapBase(int x, int y, TFace grid, String mapId) {
         super(x, y);
-        this.map = map;
+        this.map = new StarMaps(grid, this, mapId);
         this.roverable = true;
         this.mapBase = true;
         this.containMap = true;
