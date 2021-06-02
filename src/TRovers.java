@@ -4,9 +4,9 @@ interface TUnit {
     public void move();
     public void fly(int x, int y);
     public void getFlyer();
-    public String show(); 
+    public String show();
     public String getId();
-    public void changeEncryption(char c); 
+    public void changeEncryption(char c);
     public void nextTimeStep();
     public int getX();
     public int getY();
@@ -54,13 +54,13 @@ class TRover implements TUnit {
                         newPos = grid.getLocation(xPos-1, yPos);
                         newX = xPos - 1;
                     }
-                    break; 
+                    break;
                 case 2:
                     if ((yPos - 1) >= 0) {
                         newPos = grid.getLocation(xPos, yPos-1);
                         newY = yPos - 1;
                     }
-                    break; 
+                    break;
                 case 3:
                     if ((yPos + 1) < grid.getYDim()) {
                         newPos = grid.getLocation(xPos, yPos+1);
@@ -82,15 +82,15 @@ class TRover implements TUnit {
     public String getId() { return null; }
     public void changeEncryption(char c) { }
     public void setCurrentState (TUnitState s) { }
-    public String show() { 
+    public String show() {
         return "R";
     }
     public void nextTimeStep() { move(); }
     public int getX() { return this.xPos; }
     public int getY() { return this.yPos; }
-    public int getBaseX() { return null; }
-    public int getBaseY() { return null; }
-    public char getSymbol() { return null; }
+    public int getBaseX() { return -1; }
+    public int getBaseY() { return -1; }
+    public char getSymbol() { return ' '; }
     public void loseFlyer() { this.flyer = false; }
 }
 
@@ -124,8 +124,8 @@ class THero implements TUnit {
         Location newPos = null;
         Random rand = new Random();
         int directions = 4;
-        int newX = -1;
-        int newY = -1;
+        int newX = xPos;
+        int newY = yPos;
         while (newPos == null || !newPos.isWalkable()) {
             newPos = this.pos;
             int int_random = rand.nextInt(directions);
@@ -141,13 +141,13 @@ class THero implements TUnit {
                         newPos = grid.getLocation(xPos-1, yPos);
                         newX = xPos - 1;
                     }
-                    break; 
+                    break;
                 case 2:
                     if ((yPos - 1) >= 0) {
                         newPos = grid.getLocation(xPos, yPos-1);
                         newY = yPos - 1;
                     }
-                    break; 
+                    break;
                 case 3:
                     if ((yPos + 1) < grid.getYDim()) {
                         newPos = grid.getLocation(xPos, yPos+1);
@@ -165,7 +165,7 @@ class THero implements TUnit {
         //if mapBase has a map, THero will view map in the same time step
         if (this.pos.isMapBase()) {
             if (this.pos.hasMap()){
-                StarMap map = this.pos.getMap();
+                StarMaps map = this.pos.getMap();
                 map.view(this);
             }
         }
@@ -247,13 +247,13 @@ class TVader implements TUnit {
                         newPos = grid.getLocation(xPos-1, yPos);
                         newX = xPos - 1;
                     }
-                    break; 
+                    break;
                 case 2:
                     if ((yPos - 1) >= 0) {
                         newPos = grid.getLocation(xPos, yPos-1);
                         newY = yPos - 1;
                     }
-                    break; 
+                    break;
                 case 3:
                     if ((yPos + 1) < grid.getYDim()) {
                         newPos = grid.getLocation(xPos, yPos+1);
@@ -267,14 +267,6 @@ class TVader implements TUnit {
         this.pos = newPos;
         this.xPos = newX;
         this.yPos = newY;
-        if (this.pos.isMapBase()){
-            StarMap map = this.pos.getMap();
-            this.pos.removeMap(map);
-            fly(bx, by);
-            this.base.addMap(map);
-            //implement memento pattern to retrace steps
-        }
-
     }
     public void fly(int x, int y) {
         if (flyer) {
@@ -304,5 +296,5 @@ class TVader implements TUnit {
     }
     public int getBaseX() { return this.bxPos; }
     public int getBaseY() { return this.byPos; }
-    public char getSymbol() { return null; }
+    public char getSymbol() { return ' '; }
 }

@@ -12,7 +12,10 @@ public class Simulation{
     private JFrame window;
     private JPanel topPanel, groupPanel, headerPanel;
     private JPanel[][] TFacePanels;
+    private JLabel[][] TFaceLabels;
     private JLabel currentTimeStep;
+    private TFace face;
+    private List<TUnit> TUnits;
     private int timeStep = 0;
     private int rows;
     private int columns;
@@ -27,6 +30,7 @@ public class Simulation{
 
         getUserInput();
         createPanels();
+        initializeTFace();
 
         window.setSize(100*columns,100*rows);
         window.setContentPane(topPanel);
@@ -52,6 +56,8 @@ public class Simulation{
         setHeaderPanel();
         groupPanel = new JPanel();
         TFacePanels = new JPanel[rows][columns];
+        TFaceLabels = new JLabel[rows][columns];
+        face = new TFace(columns, rows);
 
         topPanel.add(headerPanel, BorderLayout.NORTH);
         topPanel.add(groupPanel, BorderLayout.CENTER);
@@ -62,6 +68,8 @@ public class Simulation{
         for(int m = 0; m < rows; m++) {
             for(int n = 0; n < columns; n++) {
                 TFacePanels[m][n] = new JPanel();
+                TFaceLabels[m][n] = new JLabel();
+                TFacePanels[m][n].add(TFaceLabels[m][n]);
                 TFacePanels[m][n].setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
                 groupPanel.add(TFacePanels[m][n]);
             }
@@ -95,6 +103,8 @@ public class Simulation{
         for(int m = 0; m < rows; m++) {
             for(int n = 0; n < columns; n++) {
                 TFacePanels[m][n] = new JPanel();
+                TFaceLabels[m][n] = new JLabel();
+                TFacePanels[m][n].add(TFaceLabels[m][n]);
                 TFacePanels[m][n].setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
                 groupPanel.add(TFacePanels[m][n]);
             }
@@ -104,6 +114,9 @@ public class Simulation{
 
         //Refreshes the TFace with its new rows and columns
         groupPanel.revalidate();
+
+        //Re-initialized TFace with its new Locations and TUnits
+        initializeTFace();
     }
 
     public void setHeaderPanel(){
@@ -135,19 +148,19 @@ public class Simulation{
     public void nextTimeStep(){
         timeStep++;
         currentTimeStep.setText("Current Time Step: " + timeStep);
-        //Scan TFace for TRovers, THeroes, and TVaders and have them move
-        //look through TUnit list and move them
-        //Unit element.move()
-        //Revalidate (update) TFace for new positions
-        //.show()
+        //Move all TUnits
+        for (TUnit temp : TUnits){
+            //temp.move();
+            temp.nextTimeStep();
+        }
+        updateTFaceElements();
     }
 
     public void initializeTFace(){
-        List<TUnit> TUnits = new ArrayList<>();
+        TUnits = new ArrayList<>();
         Random rand = new Random();
-
-        //Create TFace;
-        TFace face = new TFace(columns, rows);
+        int xPos = 0;
+        int yPos = 0;
 
         //Calc Random Location for VBase
         int xMax = columns - 2;
@@ -173,8 +186,6 @@ public class Simulation{
 
         //Calc Random Locations for THeroBases
         int options = 4;
-        int xPos = 0;
-        int yPos = 0;
         for(int i = 0; i < THeroes; i++){
             int int_random = rand.nextInt(options);
             switch(int_random) {
@@ -204,17 +215,69 @@ public class Simulation{
             Location HBase = new THeroBase(xPos, yPos, HeroId);
             face.setLocation(HBase);
 
-            TUnit hero = new THero(face, xPos, yPos, HBase, HeroId);
+            //^* randomly select
+            TUnit hero = new THero(face, xPos, yPos, HBase, HeroId, '*');
             TUnits.add(hero);
         }
 
-        //Randomly Place TRovers and Tvader to empty square
+        //Create TVader and place randomly in empty square
+        //while(!face.getLocation(xPos,yPos).isEmpty()){
+        while(face.getLocation(xPos,yPos) != null){
+            xPos = rand.nextInt(columns);
+            yPos = rand.nextInt(rows);
+        }
+        TUnits.add(new TVader(face, xPos, yPos, vBase));
+
+        //Create TRovers and place randomly in empty squares
+        for(int i = 0; i < TRovers; i++){
+            while(face.getLocation(xPos,yPos) != null){
+                xPos = rand.nextInt(columns);
+                yPos = rand.nextInt(rows);
+            }
+            TUnits.add(new TRover(face, xPos, yPos));
+        }
+
+        //Create StarBases and place randomly in empty squares
 
 
 
-        //Number of StarMaps based on TFace size(MapBases) (can only be in bases)
-        //TRovers just span randomly (needs to be in own square)
+        //Update UI with all added elements
+        updateTFaceElements();
     }
+
+    public void updateTFaceElements(){
+        //Update Positions to UI
+        for(int m = 0; m < rows; m++) {
+            for(int n = 0; n < columns; n++) {
+                if(face.getLocation(n, m) == null){
+                    TFaceLabels[m][n].setText("X");
+                }
+                else{
+                    TFaceLabels[m][n].setText(face.getLocation(n, m).show());
+                }
+            }
+        }
+        int xPos;
+        int yPos;
+        for (TUnit temp : TUnits) {
+            System.out.println(temp);
+            xPos = temp.getX();
+            yPos = temp.getY();
+            TFaceLabels[yPos][xPos].setText(temp.show());
+        }
+        //checkIndexing();
+        groupPanel.revalidate();
+    }
+
+    public void checkIndexing(){
+        for(int m = 0; m < rows; m++) {
+            for(int n = 0; n < columns; n++) {
+                TFaceLabels[m][n].setText("(" + n + ", " + m + ")");
+                //n is x/column and m is y/row
+            }
+        }
+    }
+
 
 
     public static void main(String[] args){

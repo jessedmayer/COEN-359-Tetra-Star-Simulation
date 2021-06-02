@@ -81,7 +81,7 @@ class StarMaps {
         //otherwise, add new hero into id, which is part of the restore_counter. restore_counter stays at 0
         else {
             if (hero == this.eHero) {
-                hId_resCounter.put(heroId, map.get(heroId) + 1);
+                hId_resCounter.put(heroId, hId_resCounter.get(heroId) + 1);
             }
             else {
                 hId_resCounter.put(hero.getId(), 0);
