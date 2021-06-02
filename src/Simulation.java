@@ -162,6 +162,8 @@ public class Simulation{
         int xPos = 0;
         int yPos = 0;
 
+
+
         //Calc Random Location for VBase
         int xMax = columns - 2;
         int xMin = 1;
@@ -185,6 +187,7 @@ public class Simulation{
         face.setLocation(river4);
 
         //Calc Random Locations for THeroBases
+        //Check to make HeroBase not on river
         int options = 4;
         for(int i = 0; i < THeroes; i++){
             int int_random = rand.nextInt(options);
@@ -216,13 +219,58 @@ public class Simulation{
             face.setLocation(HBase);
 
             //^* randomly select
+            int_random = rand.nextInt(2);
+            switch(int_random) {
+                case 0:
+                    //THeroBase on top row
+                    xPos = rand.nextInt(columns);
+                    yPos = 0;
+                    break;
+                case 1:
+                    //THeroBase on bottom row
+                    xPos = rand.nextInt(columns);
+                    yPos = rows - 1;
+                    break;
+            }
             TUnit hero = new THero(face, xPos, yPos, HBase, HeroId, '*');
             TUnits.add(hero);
         }
 
-        //Create TVader and place randomly in empty square
-        //while(!face.getLocation(xPos,yPos).isEmpty()){
+        //Create StarBases and place randomly in empty squares
         while(face.getLocation(xPos,yPos) != null){
+            xPos = rand.nextInt(columns);
+            yPos = rand.nextInt(rows);
+        }
+        StarMaps starAtlas = new StarAtlas(face, xPos, yPos, "Atlas");
+        StarMaps starMap1 = new StarMap(face, xPos, yPos, "map1");
+        StarMaps starMap2 = new StarMap(face, xPos, yPos, "map2");
+        starAtlas.addMap(starMap1);
+        starAtlas.addMap(starMap2);
+
+        Location mapBase1 = new MapBase(xPos, yPos, starAtlas);
+        face.setLocation(mapBase1);
+
+        while(face.getLocation(xPos,yPos) != null){
+            xPos = rand.nextInt(columns);
+            yPos = rand.nextInt(rows);
+        }
+        StarMaps starMap3 = new StarMap(face, xPos, yPos, "map3");
+        Location mapBase2 = new MapBase(xPos, yPos, starMap3);
+        face.setLocation(mapBase2);
+
+        //Set Empty Locations
+        for(int m = 0; m < rows; m++) {
+            for(int n = 0; n < columns; n++) {
+                if(face.getLocation(n,m) == null){
+                    Location newLocation = new emptyLocation(n,m);
+                    face.setLocation(newLocation);
+                }
+            }
+        }
+
+        //Create TVader and place randomly in empty square
+        //while(face.getLocation(xPos,yPos) != null){
+        while(!face.getLocation(xPos,yPos).isEmpty()){
             xPos = rand.nextInt(columns);
             yPos = rand.nextInt(rows);
         }
@@ -230,16 +278,12 @@ public class Simulation{
 
         //Create TRovers and place randomly in empty squares
         for(int i = 0; i < TRovers; i++){
-            while(face.getLocation(xPos,yPos) != null){
+            while(!face.getLocation(xPos,yPos).isEmpty()){
                 xPos = rand.nextInt(columns);
                 yPos = rand.nextInt(rows);
             }
             TUnits.add(new TRover(face, xPos, yPos));
         }
-
-        //Create StarBases and place randomly in empty squares
-
-
 
         //Update UI with all added elements
         updateTFaceElements();

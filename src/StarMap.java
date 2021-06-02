@@ -19,13 +19,13 @@ class StarMaps {
     protected TUnit eHero;
     protected String heroId = "";
 
-    public StarMaps(TFace grid, Location base, String id) {
+    public StarMaps(TFace grid, int x, int y, String id) {
         Random rand = new Random();
         this.grid = grid;
-        this.mapBase = base;
+        this.mapBase = grid.getLocation(x, y);
         this.id = id;
-        this.locId[0] = base.getX();
-        this.locId[1] = base.getY();
+        this.locId[0] = x;
+        this.locId[1] = y;
         this.body[0] = rand.nextInt(grid.getXDim());
         this.body[1] = rand.nextInt(grid.getYDim());
         this.items = 1;
@@ -46,7 +46,7 @@ class StarMaps {
         }
     }
     public void encrypt(TUnit hero, char symbol) {
-        //if the map is currently not encrypted, encrypt the map 
+        //if the map is currently not encrypted, encrypt the map
         //and add heroId to header (part of the restore_counter)
         if (!encrypted) {
             switch(symbol) {
@@ -110,14 +110,14 @@ class StarMaps {
 }
 
 class StarMap extends StarMaps {
-    public StarMap(TFace grid, Location base, String id) {
-        super(grid, base, id);
+    public StarMap(TFace grid, int x, int y, String id) {
+        super(grid, x, y, id);
     }
 }
 
 class StarAtlas extends StarMaps {
-    public StarAtlas(TFace grid, Location base, String id) {
-        super(grid, base, id);
+    public StarAtlas(TFace grid, int x, int y, String id) {
+        super(grid, x, y, id);
         this.group = true;
     }
 

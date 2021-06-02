@@ -32,7 +32,7 @@ class TFace {
     public void setVY(int y) {
         this.vBaseY = y;
     }
-    public int getVX() { 
+    public int getVX() {
         return this.vBaseX;
     }
     public int getVY() {
@@ -50,7 +50,7 @@ class Location {
     protected boolean containMap;
     protected boolean empty;
     protected int xPos;
-    protected int yPos; 
+    protected int yPos;
 
     public Location(int x, int y) {
         this.occupied = false;
