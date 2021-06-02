@@ -165,7 +165,7 @@ class THero implements TUnit {
         //if mapBase has a map, THero will view map in the same time step
         if (this.pos.isMapBase()) {
             if (this.pos.hasMap()){
-                StarMap map = this.pos.getMap();
+                StarMaps map = this.pos.getMap();
                 map.view(this);
             }
         }
@@ -267,14 +267,6 @@ class TVader implements TUnit {
         this.pos = newPos;
         this.xPos = newX;
         this.yPos = newY;
-        if (this.pos.isMapBase()){
-            StarMap map = this.pos.getMap();
-            this.pos.removeMap(map);
-            fly(bx, by);
-            this.base.addMap(map);
-            //implement memento pattern to retrace steps
-        }
-
     }
     public void fly(int x, int y) {
         if (flyer) {
