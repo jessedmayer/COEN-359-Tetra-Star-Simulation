@@ -212,11 +212,11 @@ public class Simulation{
         int int_random;
 
         //Calc Random Location for VBase
-        int xMax = columns - 2;
-        int xMin = 1;
+        int xMax = columns - 3;
+        int xMin = 2;
         int xRandom = (int)Math.floor(Math.random()*(xMax - xMin + 1) + xMin);
-        int yMax = rows - 2;
-        int yMin = 1;
+        int yMax = rows - 3;
+        int yMin = 2;
         int yRandom = (int)Math.floor(Math.random()*(yMax - yMin + 1) + yMin);
 
         //Create VBase at xRandom, yRandom
