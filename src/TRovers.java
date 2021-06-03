@@ -30,7 +30,6 @@ class TRover implements TUnit {
         this.xPos = x;
         this.yPos = y;
         this.pos = grid.getLocation(x, y);
-        this.pos.changeOccupied();
         this.flyer = false;
     }
 
@@ -40,7 +39,7 @@ class TRover implements TUnit {
         int newY = yPos;
         Random rand = new Random();
         int directions = 4;
-        while (newPos == this.pos || !newPos.isRoverable() || newPos.isOccupied()) {
+        while (newPos == this.pos || !newPos.isRoverable()) {
             newX = xPos;
             newY = yPos;
             int int_random = rand.nextInt(directions);
@@ -73,10 +72,8 @@ class TRover implements TUnit {
                     break;
             }
         }
-        this.pos.changeOccupied();
         this.pos = newPos;
         this.pos.foundVisible();
-        this.pos.changeOccupied();
         this.xPos = newX;
         this.yPos = newY;
     }
@@ -117,7 +114,6 @@ class THero implements TUnit {
         this.xPos = x;
         this.yPos = y;
         this.pos = grid.getLocation(x, y);
-        this.pos.changeOccupied();
         this.flyer = false;
         this.bxPos = hBase.getX();
         this.byPos = hBase.getY();
@@ -132,7 +128,7 @@ class THero implements TUnit {
         int directions = 4;
         int newX = xPos;
         int newY = yPos;
-        while (newPos == this.pos || !newPos.isWalkable() || newPos.isOccupied()) {
+        while (newPos == this.pos || !newPos.isWalkable()) {
             newX = xPos;
             newY = yPos;
             int int_random = rand.nextInt(directions);
@@ -165,10 +161,8 @@ class THero implements TUnit {
                     break;
             }
         }
-        this.pos.changeOccupied();
         this.pos = newPos;
         this.pos.foundVisible();
-        this.pos.changeOccupied();
         this.xPos = newX;
         this.yPos = newY;
         //if mapBase has a map, THero will view map in the same time step
@@ -181,11 +175,9 @@ class THero implements TUnit {
     }
     public void fly(int x, int y) {
         if (flyer) {
-            this.pos.changeOccupied();
             this.xPos = x;
             this.yPos = y;
             this.pos = grid.getLocation(x, y);
-            this.pos.changeOccupied();
         }
     }
     public void getFlyer() { this.flyer = true; }
@@ -232,7 +224,6 @@ class TVader implements TUnit {
         this.xPos = x;
         this.yPos = y;
         this.pos = grid.getLocation(x, y);
-        this.pos.changeOccupied();
         this.bxPos = vBase.getX();
         this.byPos = vBase.getY();
         this.base = vBase;
@@ -246,7 +237,7 @@ class TVader implements TUnit {
         int directions = 4;
         int newX = xPos;
         int newY = yPos;
-        while (newPos == this.pos || !newPos.isVaderable() || newPos.isOccupied()) {
+        while (newPos == this.pos || !newPos.isVaderable()) {
             newX = xPos;
             newY = yPos;
             //System.out.println("inside while loop");
@@ -281,19 +272,15 @@ class TVader implements TUnit {
                     break;
             }
         }
-        this.pos.changeOccupied();
         this.pos = newPos;
-        this.pos.changeOccupied();
         this.xPos = newX;
         this.yPos = newY;
     }
     public void fly(int x, int y) {
         if (flyer) {
-            this.pos.changeOccupied();
             this.xPos = x;
             this.yPos = y;
             this.pos = grid.getLocation(x, y);
-            this.pos.changeOccupied();
         }
     }
     public void getFlyer() { this.flyer = true; }

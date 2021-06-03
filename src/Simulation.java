@@ -43,15 +43,50 @@ public class Simulation{
     public void getUserInput(){
         JFrame f = new JFrame();
         String input;
-
-        input = JOptionPane.showInputDialog(f,"TFace Rows (5-15):");
-        rows = Integer.parseInt(input);
-        input = JOptionPane.showInputDialog(f,"TFace Columns (5-15):");
-        columns= Integer.parseInt(input);
-        input = JOptionPane.showInputDialog(f,"THeroes (2-4):");
-        THeroes = Integer.parseInt(input);
-        input = JOptionPane.showInputDialog(f,"TRovers (2-4):");
-        TRovers = Integer.parseInt(input);
+        boolean validInput = false;
+        while(!validInput){
+            input = JOptionPane.showInputDialog(f,"TFace Rows (5-15):");
+            rows = Integer.parseInt(input);
+            if(rows >=5 && rows <= 15){
+                validInput = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(f,"Please enter valid input");
+            }
+        }
+        validInput = false;
+        while(!validInput){
+            input = JOptionPane.showInputDialog(f,"TFace Columns (5-15):");
+            columns= Integer.parseInt(input);
+            if(columns >=5 && columns <= 15){
+                validInput = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(f,"Please enter valid input");
+            }
+        }
+        validInput = false;
+        while(!validInput){
+            input = JOptionPane.showInputDialog(f,"THeroes (2-4):");
+            THeroes = Integer.parseInt(input);
+            if(THeroes >=2 && THeroes <= 4){
+                validInput = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(f,"Please enter valid input");
+            }
+        }
+        validInput = false;
+        while(!validInput){
+            input = JOptionPane.showInputDialog(f,"TRovers (2-4):");
+            TRovers = Integer.parseInt(input);
+            if(TRovers >=2 && TRovers <= 4){
+                validInput = true;
+            }
+            else{
+                JOptionPane.showMessageDialog(f,"Please enter valid input");
+            }
+        }
     }
 
     public void decryptingStarMapMessage(String heroId, String mapId, int date, String mapText){
@@ -125,6 +160,9 @@ public class Simulation{
         //Refreshes the TFace with its new rows and columns
         groupPanel.revalidate();
 
+        //Reinitialize TFace (can make a smaller TFace, but not a larger one currently)
+        face = new TFace(columns, rows);
+
         //Re-initialized TFace with its new Locations and TUnits
         initializeTFace();
 
@@ -135,8 +173,8 @@ public class Simulation{
         headerPanel = new JPanel(new BorderLayout());
         JButton newSimulation = new JButton("New Simulation");
         JButton nextTimeStep = new JButton("Next Time Step");
-        currentTimeStep = new JLabel();
-        currentTimeStep.setText("Current Time Step: " + timeStep);
+        currentTimeStep = new JLabel("Current Time Step: " + timeStep, JLabel.CENTER);
+        //currentTimeStep.setText("Current Time Step: " + timeStep);
 
         headerPanel.add(newSimulation, BorderLayout.WEST);
         headerPanel.add(nextTimeStep, BorderLayout.EAST);
@@ -347,16 +385,26 @@ public class Simulation{
                     xPos2 = temp2.getX();
                     yPos2 = temp2.getY();
                     if((xPos == xPos2 && yPos == yPos2) && temp != temp2){
-                        if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")){
+                        System.out.println("Two TUnits in same square");
+                        if((temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader.jpg")
+                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg") )||
+                                (temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader.jpg")
+                                        && temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg"))){
+                            System.out.println("TVader+THero");
                             TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+THero.jpg"));
                         }
-                        if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")){
+                        if((temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader.jpg")
+                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg") )||
+                                (temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader.jpg")
+                                        && temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg"))){
+                            System.out.println("TVader+TRover");
                             TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+TRover.jpg"));
                         }
-                        if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")){
+                        if((temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
+                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg") )||
+                                (temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
+                                        && temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg"))){
+                            System.out.println("THero+TRover");
                             TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+TRover.jpg"));
                         }
                     }
