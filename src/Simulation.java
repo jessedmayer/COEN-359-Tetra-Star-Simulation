@@ -450,6 +450,70 @@ public class Simulation{
                     TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TRover+MapBase.jpg"));
                 }
             }
+
+            //Check if there are two TUnits on location
+            int xPos2;
+            int yPos2;
+            for (TUnit temp2 : TUnits) {
+                xPos2 = temp2.getX();
+                yPos2 = temp2.getY();
+
+                locationIcon = String.valueOf(TFaceLabels[yPos][xPos].getIcon());
+                if((xPos == xPos2 && yPos == yPos2) && temp != temp2) {
+                    if (locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/THeroBase.jpg") ||
+                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/THero+THeroBase.jpg")) {
+                        if (temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
+                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")) {
+                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+THero+THeroBase.jpg"));
+                        }
+                    }
+                    if (locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg") ||
+                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/THero+MapBase.jpg")) {
+                        if (temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
+                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")) {
+                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+THero+MapBase.jpg"));
+                        }
+                    }
+                    if (locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg") ||
+                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/TRover+MapBase.jpg")) {
+                        if (temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")
+                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")) {
+                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TRover+TRover+MapBase.jpg"));
+                        }
+                    }
+
+                    if (locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg") ||
+                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/TRover+MapBase.jpg") ||
+                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+MapBase.jpg")) {
+                        if ((temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg")
+                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")) ||
+                                (temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg"))
+                                        && temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")) {
+                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+TRover+MapBase.jpg"));
+                        }
+                    }
+                    if (locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg") ||
+                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/THero+MapBase.jpg") ||
+                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/TRover+MapBase.jpg")) {
+                        if ((temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
+                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")) ||
+                                (temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg"))
+                                        && temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")) {
+                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+TRover+MapBase.jpg"));
+                        }
+                    }
+                    if (locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg") ||
+                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/THero+MapBase.jpg") ||
+                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+MapBase.jpg")) {
+                        if ((temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
+                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg")) ||
+                                (temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg"))
+                                        && temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg")) {
+                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+THero+MapBase.jpg"));
+                        }
+                    }
+                }
+            }
         }
 
 
