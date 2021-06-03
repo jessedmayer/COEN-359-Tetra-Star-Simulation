@@ -30,6 +30,7 @@ class TRover implements TUnit {
         this.xPos = x;
         this.yPos = y;
         this.pos = grid.getLocation(x, y);
+        this.pos.changeOccupied();
         this.flyer = false;
     }
 
@@ -38,8 +39,8 @@ class TRover implements TUnit {
         int newX = xPos;
         int newY = yPos;
         Random rand = new Random();
-        int directions = 4;
-        while (newPos == this.pos || !newPos.isRoverable()) {
+        int directions = 5;
+        while (newPos == this.pos || !newPos.isRoverable() || newPos.isOccupied()) {
             newX = xPos;
             newY = yPos;
             int int_random = rand.nextInt(directions);
@@ -71,9 +72,14 @@ class TRover implements TUnit {
                 default:
                     break;
             }
+            if (int_random == 4) {
+                break;
+            }
         }
+        this.pos.changeOccupied();
         this.pos = newPos;
         this.pos.foundVisible();
+        this.pos.changeOccupied();
         this.xPos = newX;
         this.yPos = newY;
     }
@@ -85,7 +91,7 @@ class TRover implements TUnit {
     public void setCurrentState (TUnitState s) { }
     public String show() {
         //return "R";
-        return "COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg";
+        return "C:/Homework/COEN359/FinalProject/COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg";
     }
     public void nextTimeStep() { move(); }
     public int getX() { return this.xPos; }
@@ -114,6 +120,7 @@ class THero implements TUnit {
         this.xPos = x;
         this.yPos = y;
         this.pos = grid.getLocation(x, y);
+        this.pos.changeOccupied();
         this.flyer = false;
         this.bxPos = hBase.getX();
         this.byPos = hBase.getY();
@@ -125,10 +132,10 @@ class THero implements TUnit {
     public void move() {
         Location newPos = this.pos;
         Random rand = new Random();
-        int directions = 4;
+        int directions = 5;
         int newX = xPos;
         int newY = yPos;
-        while (newPos == this.pos || !newPos.isWalkable()) {
+        while (newPos == this.pos || !newPos.isWalkable() || newPos.isOccupied()) {
             newX = xPos;
             newY = yPos;
             int int_random = rand.nextInt(directions);
@@ -160,9 +167,14 @@ class THero implements TUnit {
                 default:
                     break;
             }
+            if (int_random == 4) {
+                break;
+            }
         }
+        this.pos.changeOccupied();
         this.pos = newPos;
         this.pos.foundVisible();
+        this.pos.changeOccupied();
         this.xPos = newX;
         this.yPos = newY;
         //if mapBase has a map, THero will view map in the same time step
@@ -175,9 +187,11 @@ class THero implements TUnit {
     }
     public void fly(int x, int y) {
         if (flyer) {
+            this.pos.changeOccupied();
             this.xPos = x;
             this.yPos = y;
             this.pos = grid.getLocation(x, y);
+            this.pos.changeOccupied();
         }
     }
     public void getFlyer() { this.flyer = true; }
@@ -190,11 +204,11 @@ class THero implements TUnit {
     public String show() {
         if (flyer) {
             //return "HF";
-            return "COEN-359-Tetra-Star-Simulation/Logos/THero+Flyer.jpg";
+            return "C:/Homework/COEN359/FinalProject/COEN-359-Tetra-Star-Simulation/Logos/THero+Flyer.jpg";
         }
         else {
             //return "H";
-            return "COEN-359-Tetra-Star-Simulation/Logos/THero.jpg";
+            return "C:/Homework/COEN359/FinalProject/COEN-359-Tetra-Star-Simulation/Logos/THero.jpg";
         }
     }
     public void setCurrentState (TUnitState s) { this.currentState = s; }
@@ -224,6 +238,7 @@ class TVader implements TUnit {
         this.xPos = x;
         this.yPos = y;
         this.pos = grid.getLocation(x, y);
+        this.pos.changeOccupied();
         this.bxPos = vBase.getX();
         this.byPos = vBase.getY();
         this.base = vBase;
@@ -234,10 +249,10 @@ class TVader implements TUnit {
     public void move() {
         Location newPos = this.pos;
         Random rand = new Random();
-        int directions = 4;
+        int directions = 5;
         int newX = xPos;
         int newY = yPos;
-        while (newPos == this.pos || !newPos.isVaderable()) {
+        while (newPos == this.pos || !newPos.isVaderable() || newPos.isOccupied()) {
             newX = xPos;
             newY = yPos;
             //System.out.println("inside while loop");
@@ -271,16 +286,23 @@ class TVader implements TUnit {
                 default:
                     break;
             }
+            if (int_random == 4) {
+                break;
+            }
         }
+        this.pos.changeOccupied();
         this.pos = newPos;
+        this.pos.changeOccupied();
         this.xPos = newX;
         this.yPos = newY;
     }
     public void fly(int x, int y) {
         if (flyer) {
+            this.pos.changeOccupied();
             this.xPos = x;
             this.yPos = y;
             this.pos = grid.getLocation(x, y);
+            this.pos.changeOccupied();
         }
     }
     public void getFlyer() { this.flyer = true; }
@@ -291,11 +313,11 @@ class TVader implements TUnit {
     public String getId() { return null; }
     public String show() {
         if (flyer) {
-            return "COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg";
+            return "C:/Homework/COEN359/FinalProject/COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg";
         }
         else {
             //return "V";
-            return "COEN-359-Tetra-Star-Simulation/Logos/TVader.jpg";
+            return "C:/Homework/COEN359/FinalProject/COEN-359-Tetra-Star-Simulation/Logos/TVader.jpg";
         }
     }
     public int getX() { return this.xPos; }
