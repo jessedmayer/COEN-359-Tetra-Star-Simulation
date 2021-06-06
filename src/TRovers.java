@@ -109,17 +109,50 @@ class THero implements TUnit {
     private char encryptMethod;
     private TUnitState currentState;
 
-    public THero(TFace grid, int x, int y, Location hBase, String id, char method) {
-        this.grid = grid;
-        this.xPos = x;
-        this.yPos = y;
-        this.pos = grid.getLocation(x, y);
+    public static class HeroBuilder {
+        private TFace grid = null;
+        private String id;
+        private Location hBase = null;
+        private int x = -1;
+        private int y = -1;
+        private char method = ' ';
+
+        public HeroBuilder(String id) {
+            this.id = id;
+        }
+        public HeroBuilder setGrid(TFace grid) {
+            this.grid = grid;
+            return this;
+        }
+        public HeroBuilder setLoc(int x, int y) {
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+        public HeroBuilder setBase(Location hBase) {
+            this.hBase = hBase;
+            return this;
+        }
+        public HeroBuilder setChar(char method) {
+            this.method = method;
+            return this;
+        }
+        public THero build() {
+            return new THero(this);
+        }
+    }
+
+    private THero(HeroBuilder builder) {
+        this.grid = builder.grid;
+        this.xPos = builder.x;
+        this.yPos = builder.y;
+        this.pos = grid.getLocation(xPos, yPos);
         this.flyer = false;
-        this.bxPos = hBase.getX();
-        this.byPos = hBase.getY();
-        this.base = hBase;
-        this.id = id;
-        this.encryptMethod = method;
+        this.bxPos = builder.hBase.getX();
+        this.byPos = builder.hBase.getY();
+        this.base = builder.hBase;
+        this.id = builder.id;
+        this.encryptMethod = builder.method;
         this.currentState = new HeroMovingState(grid, this);
     }
     public void move() {
@@ -219,17 +252,41 @@ class TVader implements TUnit {
     private int byPos;
     private TUnitState currentState;
 
-    public TVader(TFace grid, int x, int y, Location vBase) {
-        this.grid = grid;
-        this.xPos = x;
-        this.yPos = y;
-        this.pos = grid.getLocation(x, y);
-        this.bxPos = vBase.getX();
-        this.byPos = vBase.getY();
-        this.base = vBase;
+    public static class VaderBuilder {
+        private TFace grid = null;
+        private Location vBase = null;
+        private int x = -1;
+        private int y = -1;
+
+        public VaderBuilder() {
+        }
+        public VaderBuilder setGrid(TFace grid) {
+            this.grid = grid;
+            return this;
+        }
+        public VaderBuilder setLoc(int x, int y) {
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+        public VaderBuilder setBase(Location vBase) {
+            this.vBase = vBase;
+            return this;
+        }
+        public TVader build() {
+            return new TVader(this);
+        }
+    }
+    private TVader(VaderBuilder builder) {
+        this.grid = builder.grid;
+        this.xPos = builder.x;
+        this.yPos = builder.y;
+        this.pos = builder.grid.getLocation(xPos, yPos);
+        this.bxPos = builder.vBase.getX();
+        this.byPos = builder.vBase.getY();
+        this.base = builder.vBase;
         this.flyer = true;
         this.currentState = new VaderMovingState(grid, this);
-        //implement builder pattern for constructor
     }
     public void move() {
         Location newPos = this.pos;
