@@ -283,7 +283,8 @@ public class Simulation{
                     method = '*';
                     break;
             }
-            TUnit hero = new THero(face, xPos, yPos, HBase, HeroId, method);
+            THero hb = new THero.HeroBuilder(HeroId).setGrid(face).setLoc(xPos, yPos).setBase(HBase).setChar(method).build();
+            TUnit hero = hb;
             TUnits.add(hero);
         }
 
@@ -329,7 +330,9 @@ public class Simulation{
             xPos = rand.nextInt(columns);
             yPos = rand.nextInt(rows);
         }
-        TUnits.add(new TVader(face, xPos, yPos, vBase));
+        TVader vb = new TVader.VaderBuilder().setGrid(face).setLoc(xPos, yPos).setBase(vBase).build();
+        TUnit vader = vb;
+        TUnits.add(vader);
 
         //Create TRovers and place randomly in empty squares
         for(int i = 0; i < TRovers; i++){
