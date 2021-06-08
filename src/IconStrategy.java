@@ -54,6 +54,27 @@ class EmptyLocationThreeUnits implements IconStrategy{
 
     @Override
     public ImageIcon assignIcon(TFaceLocationFlags.LocationFlags currentLocationFlags) {
+        if(currentLocationFlags.THeroes == 3){
+            return new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/3THeroes.jpg");
+        }
+        if(currentLocationFlags.TRovers == 3){
+            return new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/3TRovers.jpg");
+        }
+        if((currentLocationFlags.THeroes == 2) && (currentLocationFlags.TRovers == 1)){
+            return new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/2THeroes+TRover.jpg");
+        }
+        if((currentLocationFlags.THeroes == 2) && (currentLocationFlags.TVaders == 1)){
+            return new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/2THeroes+TVader.jpg");
+        }
+        if((currentLocationFlags.TRovers == 2) && (currentLocationFlags.THeroes == 1)){
+            return new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/2TRovers+THero.jpg");
+        }
+        if((currentLocationFlags.TRovers == 2) && (currentLocationFlags.TVaders == 1)){
+            return new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/2TRovers+TVader.jpg");
+        }
+        if((currentLocationFlags.TVaders == 1) && (currentLocationFlags.THeroes == 1) && (currentLocationFlags.TRovers == 1)){
+            return new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+THero+TRover.jpg");
+        }
         return null;
     }
 }

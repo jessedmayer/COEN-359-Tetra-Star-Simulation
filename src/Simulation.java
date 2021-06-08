@@ -163,8 +163,7 @@ public class Simulation{
         headerPanel = new JPanel(new BorderLayout());
         JButton newSimulation = new JButton("New Simulation");
         JButton nextTimeStep = new JButton("Next Time Step");
-        currentTimeStep = new JLabel();
-        currentTimeStep.setText("Current Time Step: " + timeStep);
+        currentTimeStep = new JLabel("Current Time Step: " + timeStep, JLabel.CENTER);
 
         headerPanel.add(newSimulation, BorderLayout.WEST);
         headerPanel.add(nextTimeStep, BorderLayout.EAST);
