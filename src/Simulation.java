@@ -353,29 +353,40 @@ public class Simulation{
                 currentLocationFlags = flags.TFaceFlags[m][n];
 
                 TFaceLabels[m][n].setIcon(null);
+                IconStrategy strategy;
+
                 if((flags.TFaceFlags[m][n].locationType.equals("Empty")) && (flags.TFaceFlags[m][n].TUnits == 1)){
-                    TFaceLabels[m][n].setIcon((new EmptyLocationOneUnit()).assignIcon(currentLocationFlags));
+                    strategy = new EmptyLocationOneUnit();
+                    //TFaceLabels[m][n].setIcon((new EmptyLocationOneUnit()).assignIcon(currentLocationFlags));
+                    TFaceLabels[m][n].setIcon(strategy.assignIcon(currentLocationFlags));
                 }
                 if((flags.TFaceFlags[m][n].locationType.equals("Empty")) && (flags.TFaceFlags[m][n].TUnits == 2)){
-                    TFaceLabels[m][n].setIcon((new EmptyLocationTwoUnits()).assignIcon(currentLocationFlags));
+                    strategy = new EmptyLocationTwoUnits();
+                    TFaceLabels[m][n].setIcon(strategy.assignIcon(currentLocationFlags));
                 }
                 if((flags.TFaceFlags[m][n].locationType.equals("Empty")) && (flags.TFaceFlags[m][n].TUnits == 3)){
-                    TFaceLabels[m][n].setIcon((new EmptyLocationThreeUnits()).assignIcon(currentLocationFlags));
+                    strategy = new EmptyLocationThreeUnits();
+                    TFaceLabels[m][n].setIcon(strategy.assignIcon(currentLocationFlags));
                 }
                 if((!flags.TFaceFlags[m][n].isEmpty) && (flags.TFaceFlags[m][n].TUnits == 0)){
-                    TFaceLabels[m][n].setIcon((new NonEmptyLocationZeroUnits()).assignIcon(currentLocationFlags));
+                    strategy = new NonEmptyLocationZeroUnits();
+                    TFaceLabels[m][n].setIcon(strategy.assignIcon(currentLocationFlags));
                 }
                 if((!flags.TFaceFlags[m][n].isEmpty) && (flags.TFaceFlags[m][n].TUnits == 1)){
-                    TFaceLabels[m][n].setIcon((new NonEmptyLocationOneUnit()).assignIcon(currentLocationFlags));
+                    strategy = new NonEmptyLocationOneUnit();
+                    TFaceLabels[m][n].setIcon(strategy.assignIcon(currentLocationFlags));
                 }
                 if((!flags.TFaceFlags[m][n].isEmpty) && (flags.TFaceFlags[m][n].TUnits == 2)){
-                    TFaceLabels[m][n].setIcon((new NonEmptyLocationTwoUnits()).assignIcon(currentLocationFlags));
+                    strategy = new NonEmptyLocationTwoUnits();
+                    TFaceLabels[m][n].setIcon(strategy.assignIcon(currentLocationFlags));
                 }
                 if((!flags.TFaceFlags[m][n].isEmpty) && (flags.TFaceFlags[m][n].TUnits == 3)){
-                    TFaceLabels[m][n].setIcon((new NonEmptyLocationThreeUnits()).assignIcon(currentLocationFlags));
+                    strategy = new NonEmptyLocationThreeUnits();
+                    TFaceLabels[m][n].setIcon(strategy.assignIcon(currentLocationFlags));
                 }
                 if(flags.TFaceFlags[m][n].locationType.equals("NotVisible")){
-                    TFaceLabels[m][n].setIcon((new NotVisibleLocation()).assignIcon(currentLocationFlags));
+                    strategy = new NotVisibleLocation();
+                    TFaceLabels[m][n].setIcon(strategy.assignIcon(currentLocationFlags));
                 }
             }
         }
