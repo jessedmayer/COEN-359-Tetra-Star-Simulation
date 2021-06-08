@@ -111,7 +111,7 @@ class riverLocation extends Location {
     @Override
     public String show() {
         //return "~";
-        return "COEN-359-Tetra-Star-Simulation/Logos/River.jpg";
+        return "River";
     }
 }
 
@@ -145,7 +145,7 @@ class THeroBase extends Location {
     }
     public String show() {
         //return "b";
-        return "COEN-359-Tetra-Star-Simulation/Logos/THeroBase.jpg";
+        return "THeroBase";
     }
 }
 
@@ -166,7 +166,7 @@ class TVaderBase extends Location {
     }
     public String show() {
         //return "B";
-        return "COEN-359-Tetra-Star-Simulation/Logos/TVaderBase.jpg";
+        return "TVaderBase";
     }
     public void removeMap(StarMaps map) {
         vBase.removeMap(map);
@@ -199,6 +199,6 @@ class MapBase extends Location {
     public StarMaps getMap() { return this.map; }
     public String show() {
         //return "M";
-        return "COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg";
+        return "MapBase";
     }
 }

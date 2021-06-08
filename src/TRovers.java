@@ -85,7 +85,7 @@ class TRover implements TUnit {
     public void setCurrentState (TUnitState s) { }
     public String show() {
         //return "R";
-        return "COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg";
+        return "TRover";
     }
     public void nextTimeStep() { move(); }
     public int getX() { return this.xPos; }
@@ -223,11 +223,11 @@ class THero implements TUnit {
     public String show() {
         if (flyer) {
             //return "HF";
-            return "COEN-359-Tetra-Star-Simulation/Logos/THero+Flyer.jpg";
+            return "THero+Flyer";
         }
         else {
             //return "H";
-            return "COEN-359-Tetra-Star-Simulation/Logos/THero.jpg";
+            return "THero";
         }
     }
     public void setCurrentState (TUnitState s) { this.currentState = s; }
@@ -348,11 +348,11 @@ class TVader implements TUnit {
     public String getId() { return null; }
     public String show() {
         if (flyer) {
-            return "COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg";
+            return "TVader+Flyer";
         }
         else {
             //return "V";
-            return "COEN-359-Tetra-Star-Simulation/Logos/TVader.jpg";
+            return "TVader";
         }
     }
     public int getX() { return this.xPos; }

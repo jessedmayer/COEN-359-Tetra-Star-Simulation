@@ -89,13 +89,6 @@ public class Simulation{
         }
     }
 
-    public void decryptingStarMapMessage(String heroId, String mapId, int date, String mapText){
-        JFrame f = new JFrame();
-        JOptionPane.showMessageDialog(f, heroId + " has decrypted " + mapId +
-                ", which was previously encrypted at time step " + date +
-                " the contents of the Star Map are: " + mapText);
-    }
-
     public void createPanels(){
         topPanel = new JPanel(new BorderLayout());
         setHeaderPanel();
@@ -350,178 +343,42 @@ public class Simulation{
     }
 
     public void updateTFaceElements(){
-        //Update Positions to UI
+        //New Implementation using TFaceLocationFlags and IconStrategy
+        TFaceLocationFlags flags = new TFaceLocationFlags(face, TUnits, columns, rows);
+        flags.setLocationFlags();
+
+        TFaceLocationFlags.LocationFlags currentLocationFlags;
         for(int m = 0; m < rows; m++) {
-            for(int n = 0; n < columns; n++) {
-                if(!face.getLocation(n, m).isVisible()){
-                    TFaceLabels[m][n].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/NotVisible.jpg"));
-                }
-                else{
-                    TFaceLabels[m][n].setIcon(new ImageIcon(face.getLocation(n, m).show()));
-                    //TFaceLabels[m][n].setAlignmentX(JLabel.CENTER);
-                    //TFaceLabels[m][n].setAlignmentY(JLabel.CENTER);
-                    //ImageIcon tempIcon = new ImageIcon(face.getLocation(n, m).show());
-                    //Image tempImage = getScaledImage(tempIcon);
-                    //TFaceLabels[m][n].setIcon(getScaledImage(new ImageIcon()));
+            for (int n = 0; n < columns; n++) {
+                currentLocationFlags = flags.TFaceFlags[m][n];
 
+                TFaceLabels[m][n].setIcon(null);
+                if((flags.TFaceFlags[m][n].locationType.equals("Empty")) && (flags.TFaceFlags[m][n].TUnits == 1)){
+                    TFaceLabels[m][n].setIcon((new EmptyLocationOneUnit()).assignIcon(currentLocationFlags));
                 }
-            }
-        }
-        int xPos;
-        int yPos;
-        for (TUnit temp : TUnits) {
-            //System.out.println(temp);
-            xPos = temp.getX();
-            yPos = temp.getY();
-
-            if(face.getLocation(xPos,yPos).isEmpty()){
-                //TUnit is by itself in empty square
-                TFaceLabels[yPos][xPos].setIcon(new ImageIcon(temp.show()));
-
-                //Check if TUnit shares square with another TUnit in empty square
-                int xPos2;
-                int yPos2;
-                for (TUnit temp2 : TUnits) {
-                    xPos2 = temp2.getX();
-                    yPos2 = temp2.getY();
-                    if((xPos == xPos2 && yPos == yPos2) && temp != temp2){
-                        //System.out.println("Two TUnits in same square");
-                        if((temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg") )||
-                                (temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg")
-                                        && temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg"))){
-                            //System.out.println("TVader+THero");
-                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+THero.jpg"));
-                        }
-                        if((temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg") )||
-                                (temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg")
-                                        && temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg"))){
-                            //System.out.println("TVader+TRover");
-                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+TRover.jpg"));
-                        }
-                        if((temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg") )||
-                                (temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
-                                        && temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg"))){
-                            //System.out.println("THero+TRover");
-                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+TRover.jpg"));
-                        }
-                        if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")){
-                            //System.out.println("THero+TRover");
-                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+THero.jpg"));
-                        }
-                        if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")){
-                            //System.out.println("THero+TRover");
-                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TRover+TRover.jpg"));
-                        }
-                    }
+                if((flags.TFaceFlags[m][n].locationType.equals("Empty")) && (flags.TFaceFlags[m][n].TUnits == 2)){
+                    TFaceLabels[m][n].setIcon((new EmptyLocationTwoUnits()).assignIcon(currentLocationFlags));
                 }
-
-            }
-
-            String locationIcon = String.valueOf(TFaceLabels[yPos][xPos].getIcon());
-            if(locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/THeroBase.jpg")){
-                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")){
-                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+THeroBase.jpg"));
+                if((flags.TFaceFlags[m][n].locationType.equals("Empty")) && (flags.TFaceFlags[m][n].TUnits == 3)){
+                    TFaceLabels[m][n].setIcon((new EmptyLocationThreeUnits()).assignIcon(currentLocationFlags));
                 }
-                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero+Flyer.jpg")){ //unsure if used
-                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+THeroBase.jpg"));
+                if((!flags.TFaceFlags[m][n].isEmpty) && (flags.TFaceFlags[m][n].TUnits == 0)){
+                    TFaceLabels[m][n].setIcon((new NonEmptyLocationZeroUnits()).assignIcon(currentLocationFlags));
                 }
-            }
-            if(locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/TVaderBase.jpg")){
-                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero+Flyer.jpg")){
-                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+TVaderBase.jpg"));
+                if((!flags.TFaceFlags[m][n].isEmpty) && (flags.TFaceFlags[m][n].TUnits == 1)){
+                    TFaceLabels[m][n].setIcon((new NonEmptyLocationOneUnit()).assignIcon(currentLocationFlags));
                 }
-                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg")){
-                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+TVaderBase.jpg"));
+                if((!flags.TFaceFlags[m][n].isEmpty) && (flags.TFaceFlags[m][n].TUnits == 2)){
+                    TFaceLabels[m][n].setIcon((new NonEmptyLocationTwoUnits()).assignIcon(currentLocationFlags));
                 }
-            }
-            if(locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg")){
-                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")){
-                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+MapBase.jpg"));
+                if((!flags.TFaceFlags[m][n].isEmpty) && (flags.TFaceFlags[m][n].TUnits == 3)){
+                    TFaceLabels[m][n].setIcon((new NonEmptyLocationThreeUnits()).assignIcon(currentLocationFlags));
                 }
-                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero+Flyer.jpg")){ //Add later
-                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+MapBase.jpg"));
-                }
-                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg")){
-                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+MapBase.jpg"));
-                }
-                if(temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")){
-                    TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TRover+MapBase.jpg"));
-                }
-            }
-
-            //Check if there are two TUnits on location
-            int xPos2;
-            int yPos2;
-            for (TUnit temp2 : TUnits) {
-                xPos2 = temp2.getX();
-                yPos2 = temp2.getY();
-
-                locationIcon = String.valueOf(TFaceLabels[yPos][xPos].getIcon());
-                if((xPos == xPos2 && yPos == yPos2) && temp != temp2) {
-                    if (locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/THeroBase.jpg") ||
-                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/THero+THeroBase.jpg")) {
-                        if (temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")) {
-                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+THero+THeroBase.jpg"));
-                        }
-                    }
-                    if (locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg") ||
-                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/THero+MapBase.jpg")) {
-                        if (temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")) {
-                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+THero+MapBase.jpg"));
-                        }
-                    }
-                    if (locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg") ||
-                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/TRover+MapBase.jpg")) {
-                        if (temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")) {
-                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TRover+TRover+MapBase.jpg"));
-                        }
-                    }
-
-                    if (locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg") ||
-                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/TRover+MapBase.jpg") ||
-                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+MapBase.jpg")) {
-                        if ((temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")) ||
-                                (temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg"))
-                                        && temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")) {
-                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+TRover+MapBase.jpg"));
-                        }
-                    }
-                    if (locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg") ||
-                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/THero+MapBase.jpg") ||
-                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/TRover+MapBase.jpg")) {
-                        if ((temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")) ||
-                                (temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg"))
-                                        && temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TRover.jpg")) {
-                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/THero+TRover+MapBase.jpg"));
-                        }
-                    }
-                    if (locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/MapBase.jpg") ||
-                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/THero+MapBase.jpg") ||
-                            locationIcon.equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+MapBase.jpg")) {
-                        if ((temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg")
-                                && temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg")) ||
-                                (temp2.show().equals("COEN-359-Tetra-Star-Simulation/Logos/THero.jpg"))
-                                        && temp.show().equals("COEN-359-Tetra-Star-Simulation/Logos/TVader+Flyer.jpg")) {
-                            TFaceLabels[yPos][xPos].setIcon(new ImageIcon("COEN-359-Tetra-Star-Simulation/Logos/TVader+THero+MapBase.jpg"));
-                        }
-                    }
+                if(flags.TFaceFlags[m][n].locationType.equals("NotVisible")){
+                    TFaceLabels[m][n].setIcon((new NotVisibleLocation()).assignIcon(currentLocationFlags));
                 }
             }
         }
-
-
-
-
         //checkIndexing();
         groupPanel.revalidate();
     }
@@ -534,17 +391,6 @@ public class Simulation{
             }
         }
     }
-    private Image getScaledImage(Image srcImg){
-        BufferedImage resizedImg = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
-
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImg, 0, 0, 100, 100, null);
-        g2.dispose();
-
-        return resizedImg;
-    }
-
 
     public static void main(String[] args){
         new Simulation();
